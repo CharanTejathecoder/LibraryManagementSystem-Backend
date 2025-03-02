@@ -8,6 +8,7 @@ import com.example.demo.enumeration.UserFilter;
 import com.example.demo.enumeration.UserType;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,5 +80,15 @@ public class UserService {
                 userName(userFromDb.getName()).
                 userPhoneNo(userFromDb.getPhoneNo()).
                 build();
+    }
+
+    public User checkUserValidOrNot(@NotBlank(message = "user email cannot be blank") String userEmail) {
+        List<User> user= userRepository.findByEmail(userEmail);
+        if(user.isEmpty())
+        {
+            return null;
+        }else{
+            return user.get(0);
+        }
     }
 }

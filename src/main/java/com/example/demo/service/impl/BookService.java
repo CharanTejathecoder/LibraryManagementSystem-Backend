@@ -6,9 +6,11 @@ import com.example.demo.dto.BookFilterResponse;
 import com.example.demo.enumeration.BookFilter;
 import com.example.demo.enumeration.Operator;
 import com.example.demo.model.Author;
+import com.example.demo.model.User;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.service.BookFilterFactory;
 import com.example.demo.service.BookFilterStratergy;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.model.Book;
@@ -46,5 +48,21 @@ public class BookService {
     public List<BookFilterResponse> filter(BookFilter filterBy, Operator operator, String value){
         BookFilterStratergy bookFilterStratergy = bookFilterFactory.getStratergy(filterBy);
         return bookFilterStratergy.getFilteredBook(operator,value);
+    }
+
+    public Book checkBookExistsOrNot(@NotBlank(message = "user email cannot be blank") String bookNo) {
+        List<Book> book= bookRepository.findByBookNo(bookNo);
+        if(book.isEmpty())
+        {
+            return null;
+        }
+        else{
+            return book.getFirst();
+        }
+    }
+
+    public void assign(Book book, User user) {
+        book.setUser(user);
+        bookRepository.save(book);
     }
 }

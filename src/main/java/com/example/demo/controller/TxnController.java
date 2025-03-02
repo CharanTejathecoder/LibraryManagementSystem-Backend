@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.TxnRequest;
+import com.example.demo.exception.BookException;
+import com.example.demo.exception.UserException;
 import com.example.demo.service.TxnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -17,7 +19,7 @@ public class TxnController {
     private TxnService txnService;
 
     @PostMapping("/issue")
-    public String createTxn(@RequestBody TxnRequest txnRequest){
+    public String createTxn(@RequestBody TxnRequest txnRequest) throws UserException, BookException {
         return txnService.create(txnRequest);
     }
 
